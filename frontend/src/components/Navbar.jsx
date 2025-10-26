@@ -35,7 +35,7 @@ export default function Navbar({ darkMode, toggleTheme }) {
     {
       label: "Mathematics",
       icon: <img src={math} alt="TailwindCSS" width={48} height={48} />,
-      path: "/articles/math",
+      path: "/articles/mathematics",
     },
     {
       label: "Projects",
