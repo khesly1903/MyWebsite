@@ -6,10 +6,11 @@ import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 
 import HomePage from "./pages/HomePage";
-import ArticlesPage from "./pages/ArticlesPage";
 import CryptoArticlesPage from "./pages/CryptoArticlesPage";
 import MathArticlesPage from "./pages/MathArticlesPage";
 import ProjectsPage from "./pages/ProjectsPage";
+
+import ArticleDetailPage from "./components/ArticleDetailPage";
 
 function App() {
   const [darkMode, setDarkMode] = useState(true);
@@ -22,13 +23,22 @@ function App() {
         <Navbar darkMode={darkMode} toggleTheme={toggleTheme} />
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/articles" element={<ArticlesPage />} />
+
           <Route
             path="/articles/cryptography"
             element={<CryptoArticlesPage />}
           />
           <Route path="/articles/mathematics" element={<MathArticlesPage />} />
           <Route path="/projects" element={<ProjectsPage />} />
+
+          <Route
+            path="/articles/cryptography/:fileName"
+            element={<ArticleDetailPage />}
+          />
+          <Route
+            path="/articles/mathematics/:fileName"
+            element={<ArticleDetailPage />}
+          />
         </Routes>
       </ThemeProvider>
     </>

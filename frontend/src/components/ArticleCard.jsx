@@ -6,11 +6,26 @@ import {
   Typography,
   Stack,
   Chip,
+  CardActions,
+  useTheme,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-export default function ArticleCard({ title, summary, image, tags }) {
+export default function ArticleCard({
+  title,
+  summary,
+  image,
+  tags,
+  type,
+  file,
+}) {
+  const navigate = useNavigate();
+  const theme = useTheme();
   return (
-    <Card sx={{ maxWidth: 345, borderRadius: 3, boxShadow: 3 }}>
+    <Card
+      sx={{ maxWidth: 345, borderRadius: 3 }}
+      onClick={() => navigate(`/articles/${type}/${file}`)}
+    >
       {/* Üst görsel */}
       <CardMedia
         component="img"
@@ -23,36 +38,52 @@ export default function ArticleCard({ title, summary, image, tags }) {
       {/* İçerik */}
       <CardContent>
         <Typography
-          variant="h6"
           gutterBottom
-          sx={{ fontFamily: "Texturina, serif", textAlign: "center" }}
+          sx={{
+            fontFamily: "Iceberg, serif",
+            textAlign: "center",
+            fontSize: "1.5rem",
+          }}
         >
           {title}
         </Typography>
 
         <Typography
-          variant="body2"
           color="text.secondary"
-          sx={{ fontFamily: "Almendra, serif" }}
+          sx={{ fontFamily: "Texturina, serif", fontSize: "1.2rem" }}
         >
           {summary}
         </Typography>
+      </CardContent>
 
+      <CardActions
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          p: "1rem",
+          bgcolor: theme.palette.background.custom1,
+        }}
+      >
         <Stack
           direction="row"
           spacing={1}
-          sx={{
-            mt: 2,
-            flexWrap: "wrap",
-            display: "flex",
-            justifyContent: "center",
-          }}
+          gap={1}
+          flexWrap="wrap"
+          justifyContent="center"
+          alignItems="center"
         >
           {tags?.map((tag, index) => (
-            <Chip key={index} label={tag} size="small" variant="outlined" />
+            <Chip
+              key={index}
+              label={tag}
+              size="medium"
+              sx={{ fontFamily: "Texturina, serif"}}
+              variant="filled"
+            />
           ))}
         </Stack>
-      </CardContent>
+      </CardActions>
     </Card>
   );
 }

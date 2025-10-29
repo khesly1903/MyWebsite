@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "@mui/material";
 import { Masonry } from "@mui/lab";
-import cryptoArticles from "../data/data.json";
+import cryptoArticles from "../data.json"
 import ArticleCard from "../components/ArticleCard";
 
 export default function CryptoArticlesPage() {
@@ -25,6 +25,8 @@ export default function CryptoArticlesPage() {
               summary={article.summary}
               image={article.image}
               tags={article.tags}
+              type={"cryptography"}
+              file={article.file}
             />
           </Box>
         ))}

@@ -1,0 +1,116 @@
+{
+  "cryptography": [
+    {
+      "title": "Elliptic Curves",
+      "summary": "Elliptic Curve Cryptography (ECC) leverages the properties of elliptic curves defined over finite fields to build secure public-key cryptosystems. It provides strong security with much smaller keys compared to traditional methods like RSA, making it highly efficient for Modern Cryptography applications including SSL/TLS, cryptocurrency wallets, and mobile encryption. ECC also supports digital signatures and key exchange protocols, forming a backbone for secure communications.",
+      "slug": "elliptic-curves",
+      "image": "/article-images/cryptography/elliptic-curves/elliptic-curves-overwiev1.webp",
+      "tags": ["Modern Cryptography", "Elliptic-curves", "Mathematics"],
+      "file": "elliptic-curves"
+    },
+
+    {
+      "title": "Why we are using Bcrypt?",
+      "summary": "Bcrypt is a hash algorithm designed to securely store user passwords. Derived from the Blowfish block cipher and used with a salt, it intentionally slows down hash computation through its cost factor, making brute-force attacks difficult and ensuring each hash is unique. This intentional slowness enhances password security by limiting how quickly an attacker can guess passwords.",
+      "slug": "bcrypt",
+      "image": "/article-images/cryptography/bcrypt/bcrypt-overwiev.webp",
+      "tags": ["Modern Cryptography", "Hash", "Securing Passwords"],
+      "file": "bcrypt"
+    },
+    {
+      "title": "A Cornerstone of Modern Cryptography: The ElGamal Cryptosystem",
+      "summary": "The ElGamal cryptosystem is a public-key encryption scheme built upon the mathematical foundation of the Diffie-Hellman key exchange. Instead of merely establishing a shared secret, ElGamal enables both encryption and decryption operations. Its security relies on the difficulty of the discrete logarithm problem and the randomness of ephemeral keys.",
+      "slug": "elgamal",
+      "image": "/article-images/cryptography/elgamal/elgamal-overwiev.webp",
+      "tags": ["Modern Cryptography", "ElGamal", "Cryptosystem"],
+      "file": "elgamal"
+    },
+    {
+      "title": "Le Chiffre Indéchiffrable: Vigenère",
+      "summary": "The Vigenère cipher, often hailed as 'le chiffre indéchiffrable' or 'the indecipherable cipher', is a polyalphabetic substitution cipher that uses a repeating keyword to encrypt messages. For nearly 300 years, it was considered unbreakable, standing as a symbol of cryptographic ingenuity before modern frequency analysis methods revealed its vulnerabilities.",
+      "slug": "vigenere",
+      "image": "/article-images/cryptography/vigenere/vigenere-overwiev.webp",
+      "tags": ["Classical Cryptography", "Vigenère", "Cipher"],
+      "file": "vigenere"
+    },
+    {
+      "title": "Bifid & Trifid",
+      "summary": "The Bifid cipher is a Classical Cryptography cipher that combines fractionation and transposition to encrypt messages, demonstrating how information can be scrambled in multiple steps for increased security.",
+      "slug": "bifid",
+      "image": "/article-images/cryptography/bifid/bifid-overwiev.webp",
+      "tags": ["Classical Cryptography", "Bifid"],
+      "file": "bifid"
+    },
+    {
+      "title": "Diffie-Hellman Key Exchange: The First Step to Secure Communication",
+      "summary": "The Diffie-Hellman key exchange protocol enables two parties to establish a shared secret over an insecure channel without prior private arrangements. By leveraging modular arithmetic and the difficulty of the discrete logarithm problem, it ensures that an eavesdropper cannot compute the secret key even if they know the public parameters.",
+      "slug": "diffie-hellman",
+      "image": "/article-images/cryptography/diffie-hellman/diffie-hellman-overwiev.webp",
+      "tags": ["Modern Cryptography", "Diffie-Hellman", "Key Exchange"],
+      "file": "diffie-hellman"
+    },
+
+    {
+      "title": "Caesar",
+      "summary": "The Caesar cipher is one of the simplest Classical Cryptography ciphers, shifting letters by a fixed number, mainly used for educational purposes to understand basic encryption concepts.",
+      "slug": "caesar",
+      "image": "/article-images/cryptography/caesar/caesar-overwiev.webp",
+      "tags": ["Classical Cryptography", "Caesar"],
+      "file": "caesar"
+    }
+  ],
+  "mathematics": [
+    {
+      "title": "Group theory baby Baby",
+      "summary": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Placeat blanditiis voluptatem sunt minima dolor, mollitia illum beatae assumenda non impedit, perferendis sed neque a excepturi repudiandae omnis nam error nemo?",
+      "slug": "intro-to-cryptography",
+      "image": "/article-images/cryptography/elliptic-curves/elliptic-curves-overwiev.jpg",
+      "tags": ["cryptography", "basics"],
+      "file": "group-theory"
+    },
+    {
+      "title": "Elliptic Curves",
+      "summary": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Et doloribus odio laboriosam ea laborum sapiente pariatur cumque qui enim optio!",
+      "slug": "intro-to-cryptography",
+      "image": "/article-images/cryptography/elliptic-curves/elliptic-curves-overwiev.jpg",
+      "tags": ["cryptography", "basics"],
+      "file": "something"
+    },
+    {
+      "title": "Elliptic Curves",
+      "summary": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quibusdam consectetur aut quidem iure, atque, veniam reprehenderit delectus nemo aspernatur debitis tempore necessitatibus tempora maiores, porro itaque autem voluptate aperiam iusto! Cum voluptatibus ab quae dolore sint reprehenderit corrupti enim iste.",
+      "slug": "intro-to-cryptography",
+      "image": "/article-images/cryptography/elliptic-curves/elliptic-curves-overwiev.jpg",
+      "tags": ["cryptography", "basics"]
+    },
+    {
+      "title": "Elliptic Curves",
+      "summary": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem, dignissimos?",
+      "slug": "intro-to-cryptography",
+      "image": "/article-images/cryptography/elliptic-curves/elliptic-curves-overwiev.jpg",
+      "tags": ["cryptography", "basics"]
+    },
+    {
+      "title": "Elliptic Curves",
+      "summary": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quibusdam consectetur aut quidem iure, atque, veniam reprehenderit delectus nemo aspernatur debitis tempore necessitatibus tempora maiores, porro itaque autem voluptate aperiam iusto! Cum voluptatibus ab quae dolore sint reprehenderit corrupti enim iste.",
+      "slug": "intro-to-cryptography",
+      "image": "/article-images/cryptography/elliptic-curves/elliptic-curves-overwiev.jpg",
+      "tags": ["cryptography", "basics"]
+    },
+    {
+      "title": "Elliptic Curves",
+      "summary": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Et doloribus odio laboriosam ea laborum sapiente pariatur cumque qui enim optio!",
+      "slug": "intro-to-cryptography",
+      "image": "/article-images/cryptography/elliptic-curves/elliptic-curves-overwiev.jpg",
+      "tags": ["cryptography", "basics"]
+    },
+    {
+      "title": "Elliptic Curves",
+      "summary": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem, dignissimos?",
+      "slug": "intro-to-cryptography",
+      "image": "/article-images/cryptography/elliptic-curves/elliptic-curves-overwiev.jpg",
+      "tags": ["cryptography", "basics"]
+    }
+  ],
+  "projects": {}
+}

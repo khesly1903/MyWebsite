@@ -9,7 +9,7 @@ export const darkTheme = createTheme({
     background: {
       default: "#121212", // genel arka plan (neredeyse siyah)
       paper: "#1e1e1e", // kart ve panel arka planı
-      custom1: "#252525ff",
+      custom1: "#2e2e2eff",
       custom2: "",
     },
     text: {
@@ -39,7 +39,7 @@ export const darkTheme = createTheme({
       styleOverrides: {
         root: {
           backgroundColor: "#1e1e1e",
-          boxShadow: "0 2px 8px rgba(255, 255, 255, 1)",
+          boxShadow: "0px 2px 8px rgba(255, 255, 255, 0.08)",
           transition: "all 0.2s ease-in-out",
           "&:hover": {
             boxShadow: "0 4px 20px rgba(255, 255, 255, 1)",
@@ -69,7 +69,6 @@ export const darkTheme = createTheme({
         },
       },
     },
-   
   },
 });
 

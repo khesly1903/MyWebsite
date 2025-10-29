@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "@mui/material";
 import { Masonry } from "@mui/lab";
-import mathArticles from "../data/data.json";
+import mathArticles from "../data.json";
 import ArticleCard from "../components/ArticleCard";
 
 export default function MathArticlesPage() {
@@ -24,7 +24,9 @@ export default function MathArticlesPage() {
               title={article.title}
               summary={article.summary}
               image={article.image}
-              tags={article.tags}
+              tags={article.tags} 
+              type={"mathematics"}
+              file={article.file}
             />
           </Box>
         ))}
