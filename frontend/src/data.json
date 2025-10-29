@@ -1,15 +1,6 @@
 {
   "cryptography": [
     {
-      "title": "Elliptic Curves",
-      "summary": "Elliptic Curve Cryptography (ECC) leverages the properties of elliptic curves defined over finite fields to build secure public-key cryptosystems. It provides strong security with much smaller keys compared to traditional methods like RSA, making it highly efficient for Modern Cryptography applications including SSL/TLS, cryptocurrency wallets, and mobile encryption. ECC also supports digital signatures and key exchange protocols, forming a backbone for secure communications.",
-      "slug": "elliptic-curves",
-      "image": "/article-images/cryptography/elliptic-curves/elliptic-curves-overwiev1.webp",
-      "tags": ["Modern Cryptography", "Elliptic-curves", "Mathematics"],
-      "file": "elliptic-curves"
-    },
-
-    {
       "title": "Why we are using Bcrypt?",
       "summary": "Bcrypt is a hash algorithm designed to securely store user passwords. Derived from the Blowfish block cipher and used with a salt, it intentionally slows down hash computation through its cost factor, making brute-force attacks difficult and ensuring each hash is unique. This intentional slowness enhances password security by limiting how quickly an attacker can guess passwords.",
       "slug": "bcrypt",
@@ -34,20 +25,20 @@
       "file": "vigenere"
     },
     {
-      "title": "Bifid & Trifid",
-      "summary": "The Bifid cipher is a Classical Cryptography cipher that combines fractionation and transposition to encrypt messages, demonstrating how information can be scrambled in multiple steps for increased security.",
-      "slug": "bifid",
-      "image": "/article-images/cryptography/bifid/bifid-overwiev.webp",
-      "tags": ["Classical Cryptography", "Bifid"],
-      "file": "bifid"
-    },
-    {
       "title": "Diffie-Hellman Key Exchange: The First Step to Secure Communication",
       "summary": "The Diffie-Hellman key exchange protocol enables two parties to establish a shared secret over an insecure channel without prior private arrangements. By leveraging modular arithmetic and the difficulty of the discrete logarithm problem, it ensures that an eavesdropper cannot compute the secret key even if they know the public parameters.",
       "slug": "diffie-hellman",
       "image": "/article-images/cryptography/diffie-hellman/diffie-hellman-overwiev.webp",
       "tags": ["Modern Cryptography", "Diffie-Hellman", "Key Exchange"],
       "file": "diffie-hellman"
+    },
+    {
+      "title": "Bifid & Trifid",
+      "summary": "The Bifid cipher is a Classical Cryptography cipher that combines fractionation and transposition to encrypt messages, demonstrating how information can be scrambled in multiple steps for increased security.",
+      "slug": "bifid",
+      "image": "/article-images/cryptography/bifid/bifid-overwiev.webp",
+      "tags": ["Classical Cryptography", "Bifid"],
+      "file": "bifid"
     },
 
     {
@@ -57,6 +48,14 @@
       "image": "/article-images/cryptography/caesar/caesar-overwiev.webp",
       "tags": ["Classical Cryptography", "Caesar"],
       "file": "caesar"
+    },
+    {
+      "title": "Elliptic Curves",
+      "summary": "Elliptic Curve Cryptography (ECC) leverages the properties of elliptic curves defined over finite fields to build secure public-key cryptosystems. It provides strong security with much smaller keys compared to traditional methods like RSA, making it highly efficient for Modern Cryptography applications including SSL/TLS, cryptocurrency wallets, and mobile encryption. ECC also supports digital signatures and key exchange protocols, forming a backbone for secure communications.",
+      "slug": "elliptic-curves",
+      "image": "/article-images/cryptography/elliptic-curves/elliptic-curves-overwiev1.webp",
+      "tags": ["Modern Cryptography", "Elliptic-curves", "Mathematics"],
+      "file": "elliptic-curves"
     }
   ],
   "mathematics": [

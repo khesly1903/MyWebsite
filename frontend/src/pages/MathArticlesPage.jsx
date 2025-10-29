@@ -1,15 +1,26 @@
 import React from "react";
 import { Box } from "@mui/material";
 import { Masonry } from "@mui/lab";
-import mathArticles from "../data.json";
+// import mathArticles from "../data.json";
 import ArticleCard from "../components/ArticleCard";
 
 export default function MathArticlesPage() {
-  const articles = mathArticles["mathematics"];
+  // const articles = mathArticles["mathematics"];
 
   return (
-    <Box sx={{ width: "100%", display: "flex", justifyContent: "center", p:"2rem 0"}}>
-      <Masonry
+    <Box
+      sx={{
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        p: "2rem 0",
+        fontFamily: "Iceberg, serif",
+        textAlign: "center",
+        fontSize:"2rem"
+      }}
+    >
+      I am currently woring on it
+      {/* <Masonry
         columns={{ xs: 1, sm: 2, md: 3 }}
         spacing={2}
         sx={{
@@ -30,7 +41,7 @@ export default function MathArticlesPage() {
             />
           </Box>
         ))}
-      </Masonry>
+      </Masonry> */}
     </Box>
   );
 }

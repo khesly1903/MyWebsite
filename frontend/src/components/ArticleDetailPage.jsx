@@ -28,8 +28,8 @@ export default function ArticleDetailPage() {
         setLoading(false);
       })
       .catch((err) => {
-        console.error("Markdown dosyası yüklenemedi:", err);
-        setContent("# 404\nBu makale bulunamadı.");
+        console.error("Markdown file failed to load: ", err);
+        setContent("# 404\nArticle not found");
         setLoading(false);
       });
   }, [fileName]);
