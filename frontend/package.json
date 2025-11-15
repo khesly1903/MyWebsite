@@ -1,6 +1,6 @@
 {
   "name": "frontend",
-  "homepage": "https://khesly1903.github.io/berkay-portfolio",
+  "homepage": "https://khesly1903.github.io/",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "predeploy" : "npm run build",
+    "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {

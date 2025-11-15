@@ -15,6 +15,7 @@ import ArticleDetailPage from "./components/ArticleDetailPage";
 function App() {
   const [darkMode, setDarkMode] = useState(true);
 
+
   const toggleTheme = () => setDarkMode((prev) => !prev);
   return (
     <>
@@ -33,11 +34,11 @@ function App() {
 
           <Route
             path="/articles/cryptography/:fileName"
-            element={<ArticleDetailPage />}
+            element={<ArticleDetailPage articleType={"Cryptography"} />}
           />
           <Route
             path="/articles/mathematics/:fileName"
-            element={<ArticleDetailPage />}
+            element={<ArticleDetailPage articleType={"Mathematics"} />}
           />
         </Routes>
       </ThemeProvider>

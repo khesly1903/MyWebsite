@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   Box,
@@ -6,15 +6,29 @@ import {
   Typography,
   CircularProgress,
   Paper,
-  Alert,
+  Grid,
+  CssBaseline,
+  useScrollTrigger,
 } from "@mui/material";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+// import ReactMarkdown from "react-markdown";
+// import remarkGfm from "remark-gfm";
+import ScrollToTop from "./ScrollToTop";
+import ScrollHint from "./ScrollHint";
+import { getHeadings } from "../utils/getHeadings";
+import MarkdownRender from "./MarkdownRender";
+import TableOfContents from "./TableOfContent";
+import { ArticleBreadcrumbs } from "./ArticleBreadcrumbs";
 
-export default function ArticleDetailPage() {
+export default function ArticleDetailPage({ articleType }) {
   const { fileName } = useParams();
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(true);
+  const [headings, setHeadings] = useState("");
+
+  const trigger = useScrollTrigger({
+    disableHysteresis: false,
+    threshold: 50,
+  });
 
   useEffect(() => {
     fetch(`/articles/${fileName}.md`)
@@ -23,8 +37,9 @@ export default function ArticleDetailPage() {
         if (text.startsWith("<!doctype html")) {
           throw new Error("404 not found");
         }
-
         setContent(text);
+        const contentHeadings = getHeadings(text);
+        setHeadings(contentHeadings);
         setLoading(false);
       })
       .catch((err) => {
@@ -43,140 +58,42 @@ export default function ArticleDetailPage() {
   }
 
   return (
-    <Container maxWidth="md" sx={{ py: 4 }}>
-      <Paper sx={{ p: 4, bgcolor: "transparent", boxShadow: "none" }}>
-        <ReactMarkdown
-          remarkPlugins={[remarkGfm]}
-          components={{
-            h1: (props) => (
-              <Typography
-                variant="h3"
-                sx={{
-                  fontFamily: "Iceberg, serif",
-                  textAlign: "center",
-                  m: "1rem",
-                }}
-                {...props}
-              />
-            ),
-            h2: (props) => (
-              <Typography
-                variant="h4"
-                sx={{ fontFamily: "Iceberg, serif", ml: "1rem", m: "0.5rem" }}
-                {...props}
-              />
-            ),
-            h3: (props) => (
-              <Typography
-                variant="h5"
-                sx={{
-                  fontFamily: "Iceberg, serif",
-                  m: "1rem 0.5rem 0rem 1rem",
-                }}
-                {...props}
-              />
-            ),
-            p: (props) => (
-              <Typography
-                variant="body1"
-                sx={{ fontFamily: "Texturina, serif", fontSize: "1.2rem" }}
-                {...props}
-              />
-            ),
-            code: ({ inline, children, ...props }) =>
-              inline ? (
-                <Box
-                  component="code"
-                  sx={{
-                    backgroundColor: "#f5f5f51b",
-                    borderRadius: "4px",
-                    px: "4px",
-                    fontFamily: "monospace",
-                    color: "#ffb347",
-                  }}
-                  {...props}
-                >
-                  {children}
-                </Box>
-              ) : (
-                <Box
-                  component="pre"
-                  sx={{
-                    backgroundColor: "#f5f5f51b",
-                    p: 2,
-                    borderRadius: 2,
-                    fontFamily: "monospace",
-                    overflowX: "auto",
-                  }}
-                  {...props}
-                >
-                  <code>{children}</code>
-                </Box>
-              ),
-            hr: () => (
-              <Box sx={{ textAlign: "center", m: "1rem" }}> ╼ ❖ ❖ ❖ ╾ </Box>
-            ),
-            li: (props) => (
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "flex-start",
-                  gap: "0.5rem",
-                  pl: 1,
-                }}
-              >
-                <Box component="span" sx={{ fontSize: "1.2rem" }}>
-                  ↳
-                </Box>
-                <Typography
-                  variant="body1"
-                  sx={{ fontFamily: "Texturina, serif", fontSize: "1.2rem" }}
-                  {...props}
-                />
-              </Box>
-            ),
-            img: ({ src, alt }) => (
-              <Box
-                sx={{
-                  width: "100",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Box
-                  component="img"
-                  src={src}
-                  alt={alt}
-                  sx={{
-                    maxWidth: "100%",
-                    borderRadius: 2,
-                    my: 2,
-                  }}
-                />
-                {alt && (
-                  <Typography
-                    variant="caption"
-                    sx={{
-                      display: "block",
-                      mt: 0.1,
-                      mb: 1,
-                      fontStyle: "italic",
-                      fontFamily: "Texturina, serif",
-                      color: "text.secondary",
-                    }}
-                  >
-                    {alt}
-                  </Typography>
-                )}
-              </Box>
-            ),
+    <Grid
+      container
+      sx={{
+        mt: "5rem",
+        // border: "1px solid blue",
+        display: "flex",
+        flexDirection: "row",
+      }}
+    >
+      <ScrollHint />
+      <ScrollToTop />
+
+      <Grid size={{ xs: 12, md: 3, lg: 3 }} sx={{ p: "1rem" }}>
+        <Box
+          sx={{
+            position: "sticky",
+            pt: "1rem",
+            overflowY: "auto",
+            top: trigger ? 0 : "4rem",
+            transition: "top 0.4s ease-in-out",
           }}
         >
-          {content}
-        </ReactMarkdown>
-      </Paper>
-    </Container>
+          <ArticleBreadcrumbs articleType={articleType} />
+          <TableOfContents headings={headings} />
+        </Box>
+      </Grid>
+
+      <Grid size={{ xs: 12, md: 7, lg: 6 }} sx={{}}>
+        <Paper sx={{ bgcolor: "transparent", boxShadow: "none", p:"1rem" }}>
+          <MarkdownRender content={content} />
+        </Paper>
+      </Grid>
+
+      <Grid size={{ xs: 12, md: 2, lg: 3 }} sx={{}}>
+        <Box sx={{ width: "100%" }}></Box>
+      </Grid>
+    </Grid>
   );
 }

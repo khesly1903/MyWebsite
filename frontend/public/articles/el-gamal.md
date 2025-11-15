@@ -5,6 +5,7 @@ Diffie-Hellman is a key exchange protocol that allows two parties to communicate
 Of course, this shared key can be used in an encryption algorithm of our choice, allowing us to perform encryption and decryption. One of the most effective methods that arises from this structure is the **ElGamal cryptosystem**. It builds on the strong mathematical foundation of Diffie-Hellman by adding an encryption layer, turning it into a full cryptosystem.
 
 ---
+## Schema
 
 To understand the algorithm, we cannot skip our classic pair — **Alice** and **Bob**. This time, Alice and Bob decide to use the ElGamal cryptosystem in their communication. Naturally, **Eve** is once again trying to secretly eavesdrop on the communication.
 
@@ -40,7 +41,7 @@ Finally, she retrieves the original message: m = c₂ · s⁻¹ (mod p).
 
 ![ElGamal Schema](/article-images/cryptography/elgamal/elgamal-schema.webp)
 
-### How does it work and why is it secure?
+## How does it work and why is it secure?
 When examining Bob’s encrypted message to Alice, we can see an elegant simplification. Replacing Alice’s computation of **s**, we have:  
 m = c₂ · (c₁ˣ)⁻¹ (mod p)  
 We know that c₁ = gᵏ (mod p) and c₂ = m · yᵏ (mod p). Substituting these in, we get:  
@@ -58,6 +59,8 @@ After some simplification and substitution, we understand how it works. But wher
 To enhance security, **p** should be chosen very large (2048 bits or more), and the randomly generated **k** value must never be reused.
 
 ---
+
+## Upgrading ElGamal
 
 Even though the ElGamal cryptosystem is theoretically secure, this direct version is not widely used in practical applications.
 

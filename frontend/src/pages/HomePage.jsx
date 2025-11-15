@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Container,
   Box,
@@ -9,6 +8,11 @@ import {
   Divider,
 } from "@mui/material";
 import TextType from "../components/TextType";
+
+import GitHubIcon from "@mui/icons-material/GitHub";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import ScrollHint from "../components/ScrollHint";
+import ScrollToTop from "../components/ScrollToTop";
 
 export default function HomePage() {
   const schools = [
@@ -132,26 +136,61 @@ export default function HomePage() {
     ],
   };
 
+  const socails = [
+    {
+      name: "github",
+      link: "https://github.com/khesly1903",
+      icon: <GitHubIcon fontSize="large" />,
+    },
+    {
+      name: "linkedin",
+      link: "https://www.linkedin.com/in/berkay-kaya-3a8bb0235/",
+      icon: <LinkedInIcon fontSize="large" />,
+    },
+  ];
+
   return (
-    <Container maxWidth={false} sx={{ width: "100%" }} className="repeating-bg2">
-      {/* 1️⃣ Kendini tanıtma */}
-      <Box sx={{ px: 4, py: 6 }}>
+    <Container
+      maxWidth={false}
+      sx={{ width: "100%" }}
+      className="repeating-bg2"
+    >
+      <ScrollHint />
+      <ScrollToTop />
+      <Box
+        sx={{
+          px: 4,
+          py: 6,
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: "column",
+          position: "relative",
+        }}
+      >
         <Grid
           container
           spacing={4}
           alignItems="center"
           justifyContent="center"
-          direction={{ xs: "column", md: "row" }} // 👈 mobilde alt alta, büyükte yan yana
+          direction={{ xs: "column", md: "row" }}
+          m={"2rem 0"}
         >
-          {/* SOL TARAF - FOTOĞRAF */}
+          {/* left side - photo */}
           <Grid item xs={12} md={6}>
-            <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
               <CardMedia
                 component="img"
                 image="/BerkayKayaAI.jpeg"
                 alt="profile"
                 sx={{
-                  width: { xs: "100%", sm: "80%", md: "20rem" },
+                  width: { xs: "70%", sm: "50%", md: "20rem" },
                   height: "auto",
                   borderRadius: "1rem",
                   objectFit: "cover",
@@ -161,13 +200,13 @@ export default function HomePage() {
             </Box>
           </Grid>
 
-          {/* SAĞ TARAF - YAZILAR */}
+          {/*right side - about me */}
           <Grid
             item
             xs={12}
             md={6}
             sx={{
-              textAlign: { xs: "center", md: "left" }, // mobilde ortalı, büyükte sola
+              textAlign: { xs: "center", md: "left" },
             }}
           >
             <TextType
@@ -201,6 +240,35 @@ export default function HomePage() {
               source code on my GitHub.
             </Typography>
           </Grid>
+        </Grid>
+        <Grid
+          sx={{
+            position: "absolute",
+            bottom: 0,
+            mt: "1rem",
+            mb:" 1rem",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <Stack
+            direction="row"
+            divider={<Divider orientation="vertical" flexItem />}
+            spacing={2}
+          >
+            {socails.map((social, key) => (
+              <Box
+                key={key}
+                component="a"
+                href={social.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                sx={{ color: "white", textDecoration: "none"}}
+              >
+                {social.icon}
+              </Box>
+            ))}
+          </Stack>
         </Grid>
       </Box>
 
@@ -530,9 +598,5 @@ export default function HomePage() {
       </section>
     </div> */}
     </Container>
-
-    
   );
 }
-
-

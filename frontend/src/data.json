@@ -1,6 +1,14 @@
 {
   "cryptography": [
     {
+      "title": "Elliptic Curves",
+      "summary": "Elliptic curves form the mathematical foundation of many modern cryptographic systems by providing a secure group structure over finite fields. This article primarily focuses on the mathematical foundations behind ECC. The strength of ECC comes from the hardness of the elliptic curve discrete logarithm problem, allowing high security with remarkably small key sizes. Today, elliptic curves power digital signatures, key exchange protocols, and lightweight encryption across secure communication systems.",
+      "slug": "elliptic-curves",
+      "image": "/article-images/cryptography/elliptic-curves/elliptic-curves-overwiev1.webp",
+      "tags": ["Modern Cryptography", "Elliptic-curves", "Mathematics"],
+      "file": "elliptic-curves"
+    },
+    {
       "title": "Why we are using Bcrypt?",
       "summary": "Bcrypt is a hash algorithm designed to securely store user passwords. Derived from the Blowfish block cipher and used with a salt, it intentionally slows down hash computation through its cost factor, making brute-force attacks difficult and ensuring each hash is unique. This intentional slowness enhances password security by limiting how quickly an attacker can guess passwords.",
       "slug": "bcrypt",
@@ -11,10 +19,10 @@
     {
       "title": "A Cornerstone of Modern Cryptography: The ElGamal Cryptosystem",
       "summary": "The ElGamal cryptosystem is a public-key encryption scheme built upon the mathematical foundation of the Diffie-Hellman key exchange. Instead of merely establishing a shared secret, ElGamal enables both encryption and decryption operations. Its security relies on the difficulty of the discrete logarithm problem and the randomness of ephemeral keys.",
-      "slug": "elgamal",
+      "slug": "el-gamal",
       "image": "/article-images/cryptography/elgamal/elgamal-overwiev.webp",
       "tags": ["Modern Cryptography", "ElGamal", "Cryptosystem"],
-      "file": "elgamal"
+      "file": "el-gamal"
     },
     {
       "title": "Le Chiffre Indéchiffrable: Vigenère",
@@ -31,31 +39,6 @@
       "image": "/article-images/cryptography/diffie-hellman/diffie-hellman-overwiev.webp",
       "tags": ["Modern Cryptography", "Diffie-Hellman", "Key Exchange"],
       "file": "diffie-hellman"
-    },
-    {
-      "title": "Bifid & Trifid",
-      "summary": "The Bifid cipher is a Classical Cryptography cipher that combines fractionation and transposition to encrypt messages, demonstrating how information can be scrambled in multiple steps for increased security.",
-      "slug": "bifid",
-      "image": "/article-images/cryptography/bifid/bifid-overwiev.webp",
-      "tags": ["Classical Cryptography", "Bifid"],
-      "file": "bifid"
-    },
-
-    {
-      "title": "Caesar",
-      "summary": "The Caesar cipher is one of the simplest Classical Cryptography ciphers, shifting letters by a fixed number, mainly used for educational purposes to understand basic encryption concepts.",
-      "slug": "caesar",
-      "image": "/article-images/cryptography/caesar/caesar-overwiev.webp",
-      "tags": ["Classical Cryptography", "Caesar"],
-      "file": "caesar"
-    },
-    {
-      "title": "Elliptic Curves",
-      "summary": "Elliptic Curve Cryptography (ECC) leverages the properties of elliptic curves defined over finite fields to build secure public-key cryptosystems. It provides strong security with much smaller keys compared to traditional methods like RSA, making it highly efficient for Modern Cryptography applications including SSL/TLS, cryptocurrency wallets, and mobile encryption. ECC also supports digital signatures and key exchange protocols, forming a backbone for secure communications.",
-      "slug": "elliptic-curves",
-      "image": "/article-images/cryptography/elliptic-curves/elliptic-curves-overwiev1.webp",
-      "tags": ["Modern Cryptography", "Elliptic-curves", "Mathematics"],
-      "file": "elliptic-curves"
     }
   ],
   "mathematics": [

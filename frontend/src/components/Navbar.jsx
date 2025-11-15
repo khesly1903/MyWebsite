@@ -16,6 +16,7 @@ import math from "../assets/math.svg";
 import { Link, useLocation } from "react-router-dom";
 import { LightMode, DarkMode } from "@mui/icons-material";
 import MaterialUISwitch from "./CustomComponents/MaterialUISwitch";
+import HideOnScroll from "./HideOnScroll";
 
 export default function Navbar({ darkMode, toggleTheme }) {
   const location = useLocation();
@@ -45,54 +46,56 @@ export default function Navbar({ darkMode, toggleTheme }) {
   ];
 
   return (
-    <AppBar position="static" color="primary" elevation={1} sx={{ px: 2 }}>
-      <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-        {/* Menü */}
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          {navItems.map((item) => (
-            <Button
-              key={item.path}
-              component={Link}
-              to={item.path}
-              sx={{
-                color: "inherit",
-                fontFamily: "Iceberg, sans-serif",
-                fontSize: isMobile ? "1.2rem" : "2rem",
-                textTransform: "none",
-                borderBottom:
-                  location.pathname === item.path
-                    ? "2px solid currentColor"
-                    : "2px solid transparent",
-                mx: 1,
-                borderRadius: 0,
-                "&:hover": {
-                  borderBottom: "2px solid currentColor",
-                },
-              }}
-            >
-              {item.icon}
-              {!isMobile && ( 
-                <Box
-                  component="span"
-                  sx={{
-                    ml: 1,
-                    fontSize: {
-                      md: "1.5rem",
-                      lg: "2rem",
-                    },
-                  }}
-                >
-                  {item.label}
-                </Box>
-              )}
-            </Button>
-          ))}
-        </Box>
+    <HideOnScroll>
+      <AppBar color="primary" elevation={1} sx={{ px: 2 }} id="back-to-top-anchor">
+        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+          {/* Menu */}
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            {navItems.map((item) => (
+              <Button
+                key={item.path}
+                component={Link}
+                to={item.path}
+                sx={{
+                  color: "inherit",
+                  fontFamily: "Iceberg, sans-serif",
+                  fontSize: isMobile ? "1.2rem" : "2rem",
+                  textTransform: "none",
+                  borderBottom:
+                    location.pathname === item.path
+                      ? "2px solid currentColor"
+                      : "2px solid transparent",
+                  mx: 1,
+                  borderRadius: 0,
+                  "&:hover": {
+                    borderBottom: "2px solid currentColor",
+                  },
+                }}
+              >
+                {item.icon}
+                {!isMobile && (
+                  <Box
+                    component="span"
+                    sx={{
+                      ml: 1,
+                      fontSize: {
+                        md: "1.5rem",
+                        lg: "2rem",
+                      },
+                    }}
+                  >
+                    {item.label}
+                  </Box>
+                )}
+              </Button>
+            ))}
+          </Box>
 
-        <Box>
-          <MaterialUISwitch checked={darkMode} onChange={toggleTheme} />
-        </Box>
-      </Toolbar>
-    </AppBar>
+          <Box>
+            <MaterialUISwitch checked={darkMode} onChange={toggleTheme} />
+          </Box>
+        </Toolbar>
+      </AppBar>
+    </HideOnScroll>
   );
 }
