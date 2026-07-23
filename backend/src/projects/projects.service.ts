@@ -11,14 +11,17 @@ export class ProjectsService {
     return this.prisma.project.create({ data });
   }
 
-  async findAll() {
+  async findAll(all = false) {
     return this.prisma.project.findMany({
+      where: all ? undefined : { published: true },
       orderBy: { createdAt: 'desc' },
     });
   }
 
-  async findOne(id: string) {
-    return this.prisma.project.findUnique({ where: { id } });
+  async findOne(id: string, all = false) {
+    return this.prisma.project.findFirst({
+      where: all ? { id } : { id, published: true },
+    });
   }
 
   async update(id: string, data: Prisma.ProjectUpdateInput) {

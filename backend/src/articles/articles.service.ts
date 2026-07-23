@@ -11,18 +11,21 @@ export class ArticlesService {
     return this.prisma.article.create({ data });
   }
 
-  async findAll() {
+  async findAll(all = false) {
     return this.prisma.article.findMany({
+      where: all ? undefined : { published: true },
       orderBy: { createdAt: 'desc' },
     });
   }
 
-  async findOne(id: string) {
-    return this.prisma.article.findUnique({ where: { id } });
+  async findOne(id: string, all = false) {
+    return this.prisma.article.findFirst({
+      where: all ? { id } : { id, published: true },
+    });
   }
 
   async findBySlug(slug: string) {
-    return this.prisma.article.findUnique({ where: { slug } });
+    return this.prisma.article.findFirst({ where: { slug, published: true } });
   }
 
   async update(id: string, data: Prisma.ArticleUpdateInput) {

@@ -35,5 +35,10 @@ export class CreateProjectDto {
   @IsBoolean()
   @IsOptional()
   published?: boolean;
+
+  @ApiProperty({ example: false, required: false, default: false })
+  @IsBoolean()
+  @IsOptional()
+  isFeatured?: boolean;
 }
 

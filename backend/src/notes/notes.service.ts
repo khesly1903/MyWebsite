@@ -11,14 +11,17 @@ export class NotesService {
     return this.prisma.note.create({ data });
   }
 
-  async findAll() {
+  async findAll(all = false) {
     return this.prisma.note.findMany({
+      where: all ? undefined : { published: true },
       orderBy: { createdAt: 'desc' },
     });
   }
 
-  async findOne(id: string) {
-    return this.prisma.note.findUnique({ where: { id } });
+  async findOne(id: string, all = false) {
+    return this.prisma.note.findFirst({
+      where: all ? { id } : { id, published: true },
+    });
   }
 
   async update(id: string, data: Prisma.NoteUpdateInput) {
