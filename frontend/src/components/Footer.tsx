@@ -16,7 +16,7 @@ const Footer: React.FC = () => {
       <Container maxWidth="md">
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
           <Typography variant="body2" color="text.secondary">
-            © {new Date().getFullYear()} Berkay Kaya. All rights reserved.
+            © {new Date().getFullYear()} Berkay Kaya
           </Typography>
           
           <Box sx={{ display: 'flex', gap: 1 }}>

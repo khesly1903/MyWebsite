@@ -8,6 +8,12 @@ export class ArticlesService {
 
 
   async create(data: Prisma.ArticleCreateInput) {
+    if (data.isHero) {
+      return this.prisma.$transaction(async (tx) => {
+        await tx.article.updateMany({ where: { isHero: true }, data: { isHero: false } });
+        return tx.article.create({ data });
+      });
+    }
     return this.prisma.article.create({ data });
   }
 
@@ -29,6 +35,12 @@ export class ArticlesService {
   }
 
   async update(id: string, data: Prisma.ArticleUpdateInput) {
+    if (data.isHero) {
+      return this.prisma.$transaction(async (tx) => {
+        await tx.article.updateMany({ where: { isHero: true, NOT: { id } }, data: { isHero: false } });
+        return tx.article.update({ where: { id }, data });
+      });
+    }
     return this.prisma.article.update({
       where: { id },
       data,

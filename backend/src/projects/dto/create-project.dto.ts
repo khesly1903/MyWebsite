@@ -40,5 +40,10 @@ export class CreateProjectDto {
   @IsBoolean()
   @IsOptional()
   isFeatured?: boolean;
+
+  @ApiProperty({ example: false, required: false, default: false, description: 'Whether this project is shown as the hero on the Projects page. Only one project can be the hero at a time.' })
+  @IsBoolean()
+  @IsOptional()
+  isHero?: boolean;
 }
 

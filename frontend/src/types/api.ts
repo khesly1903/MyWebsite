@@ -7,6 +7,7 @@ export interface Article {
   coverImage: string | null;
   published: boolean;
   isFeatured: boolean;
+  isHero: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -30,6 +31,7 @@ export interface Project {
   github: string | null;
   published: boolean;
   isFeatured: boolean;
+  isHero: boolean;
   createdAt: string;
   updatedAt: string;
 }

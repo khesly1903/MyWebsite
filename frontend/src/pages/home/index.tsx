@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { 
-  Container, Typography, Box, 
+import {
+  Container, Typography, Box,
   Stepper, Step, StepLabel, StepContent,
-  Grid, Card, CardContent, CardMedia, CardActions, Button
+  Grid, Card, CardContent, CardMedia, CardActions, Button,
+  TextField, Alert, CircularProgress
 } from '@mui/material';
+import MailOutlineIcon from '@mui/icons-material/MailOutlined';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import { useNavigate } from 'react-router-dom';
 import handImg from '../../assets/hand.png';
-import { projectsApi, articlesApi } from '../../services/api';
+import { projectsApi, articlesApi, contactApi } from '../../services/api';
 import type { Project, Article } from '../../types/api';
+
+const GITHUB_URL = 'https://github.com/khesly1903';
+const LINKEDIN_URL = 'https://www.linkedin.com/in/kayaberkay1729/';
+const CONTACT_EMAIL = 'contact@kayaberkay.xyz';
 
 const schools = [
   {
@@ -105,6 +112,8 @@ const Home: React.FC = () => {
   const navigate = useNavigate();
   const [featuredProjects, setFeaturedProjects] = useState<Project[]>([]);
   const [featuredArticles, setFeaturedArticles] = useState<Article[]>([]);
+  const [contactForm, setContactForm] = useState({ name: '', email: '', message: '', website: '' });
+  const [contactStatus, setContactStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
 
   useEffect(() => {
     projectsApi.getAll()
@@ -114,6 +123,19 @@ const Home: React.FC = () => {
       .then(res => setFeaturedArticles(res.filter(a => a.isFeatured).slice(0, 3)))
       .catch(console.error);
   }, []);
+
+  const handleContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setContactStatus('sending');
+    try {
+      await contactApi.send(contactForm);
+      setContactStatus('success');
+      setContactForm({ name: '', email: '', message: '', website: '' });
+    } catch (err) {
+      console.error(err);
+      setContactStatus('error');
+    }
+  };
 
   return (
     <Container maxWidth="lg">
@@ -289,9 +311,13 @@ const Home: React.FC = () => {
                       {project.title}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" sx={{
-                      fontSize: '0.8rem'
+                      fontSize: '0.8rem',
+                      mb: 1
                     }}>
                       {project.description}
+                    </Typography>
+                    <Typography variant="body2" color="primary" sx={{ fontWeight: 600, fontSize: '0.8rem' }}>
+                      see details &rarr;
                     </Typography>
                   </CardContent>
                 </Card>
@@ -475,6 +501,106 @@ const Home: React.FC = () => {
             </Step>
           ))}
         </Stepper>
+      </Box>
+
+      {/* Get in Touch Section */}
+      <Box sx={{ mt: { xs: 10, md: 12 }, mb: 8, maxWidth: 900, mx: 'auto', width: '100%' }}>
+        <Box sx={{ display: 'flex', gap: 7, flexWrap: 'wrap', px: 2 }}>
+          {/* Left: title + contact info */}
+          <Box sx={{ flex: '1 1 260px', minWidth: 240, display: 'flex', flexDirection: 'column', gap: 2.25 }}>
+            <Typography variant="ice" sx={{ fontFamily: "'Caveat', cursive", fontSize: '3.2rem', mb: 1, fontWeight: 500, transform: 'rotate(-2deg)', display: 'inline-block' }}>
+              Get in Touch
+            </Typography>
+            <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.7 }}>
+              Have a project in mind, or just want to talk cryptography? Reach out.
+            </Typography>
+
+            <Box
+              component="a"
+              href={`mailto:${CONTACT_EMAIL}`}
+              sx={{ display: 'flex', alignItems: 'center', gap: 1.25, textDecoration: 'none', color: 'text.primary', fontSize: '0.98rem' }}
+            >
+              <MailOutlineIcon sx={{ fontSize: 22, color: 'primary.main' }} />
+              {CONTACT_EMAIL}
+            </Box>
+
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25, color: 'text.primary', fontSize: '0.98rem' }}>
+              <LocationOnOutlinedIcon sx={{ fontSize: 22, color: 'primary.main' }} />
+              Istanbul, Türkiye
+            </Box>
+
+            <Box sx={{ display: 'flex', gap: 2, mt: 0.5 }}>
+              <Box component="a" href={GITHUB_URL} target="_blank" rel="noopener noreferrer" title="GitHub">
+                <Box component="img" src="https://cdn.simpleicons.org/github/ffffff" alt="GitHub" sx={{ width: 24, height: 24, opacity: 0.85, filter: (theme) => theme.palette.mode === 'light' ? 'invert(1)' : 'none' }} />
+              </Box>
+              <Box component="a" href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" title="LinkedIn">
+                <Box component="img" src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/linkedin.svg" alt="LinkedIn" sx={{ width: 24, height: 24, opacity: 0.85, filter: (theme) => theme.palette.mode === 'dark' ? 'invert(1)' : 'none' }} />
+              </Box>
+            </Box>
+          </Box>
+
+          {/* Right: contact form */}
+          <Box component="form" onSubmit={handleContactSubmit} sx={{ flex: '1 1 320px', minWidth: 280, display: 'flex', flexDirection: 'column', gap: 2.5 }}>
+            {/* Honeypot field, hidden from real users */}
+            <Box
+              component="input"
+              type="text"
+              name="website"
+              value={contactForm.website}
+              onChange={(e) => setContactForm({ ...contactForm, website: e.target.value })}
+              tabIndex={-1}
+              autoComplete="off"
+              sx={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }}
+            />
+
+            <TextField
+              label="Name"
+              required
+              fullWidth
+              value={contactForm.name}
+              onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
+            />
+            <TextField
+              label="Email"
+              type="email"
+              required
+              fullWidth
+              value={contactForm.email}
+              onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
+            />
+            <TextField
+              label="Message"
+              required
+              fullWidth
+              multiline
+              minRows={4}
+              value={contactForm.message}
+              onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
+            />
+
+            {contactStatus === 'success' && (
+              <Alert severity="success" onClose={() => setContactStatus('idle')}>
+                Message sent — thanks for reaching out! I'll get back to you soon.
+              </Alert>
+            )}
+            {contactStatus === 'error' && (
+              <Alert severity="error" onClose={() => setContactStatus('idle')}>
+                Something went wrong while sending your message. Please try again later.
+              </Alert>
+            )}
+
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              disabled={contactStatus === 'sending'}
+              fullWidth
+              sx={{ textTransform: 'none', fontWeight: 600, py: 1.5 }}
+            >
+              {contactStatus === 'sending' ? <CircularProgress size={22} color="inherit" /> : 'Send Message'}
+            </Button>
+          </Box>
+        </Box>
       </Box>
 
     </Container>

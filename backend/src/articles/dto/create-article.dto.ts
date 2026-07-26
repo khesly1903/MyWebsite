@@ -33,5 +33,10 @@ export class CreateArticleDto {
   @IsBoolean()
   @IsOptional()
   isFeatured?: boolean;
+
+  @ApiProperty({ example: false, required: false, default: false, description: 'Whether this article is shown as the hero on the Articles page. Only one article can be the hero at a time.' })
+  @IsBoolean()
+  @IsOptional()
+  isHero?: boolean;
 }
 

@@ -46,6 +46,19 @@ const AdminArticles: React.FC = () => {
     }
   };
 
+  const handleHeroChange = async (article: Article, checked: boolean) => {
+    if (!checked) return; // hero is single-select — uncheck by checking a different article instead
+
+    const prevHeroId = articles.find((a) => a.isHero)?.id ?? null;
+    setArticles((prev) => prev.map((a) => ({ ...a, isHero: a.id === article.id })));
+    try {
+      await adminArticlesApi.update(article.id, { isHero: true });
+    } catch (e) {
+      alert(`Failed to update: ${(e as Error).message}`);
+      setArticles((prev) => prev.map((a) => ({ ...a, isHero: a.id === prevHeroId })));
+    }
+  };
+
   const handleDelete = async (id: string, title: string) => {
     if (!confirm(`Delete "${title}"?`)) return;
     try {
@@ -80,6 +93,7 @@ const AdminArticles: React.FC = () => {
               <TableCell>Slug</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>Featured</TableCell>
+              <TableCell>Hero</TableCell>
               <TableCell>Date</TableCell>
               <TableCell align="right">Actions</TableCell>
             </TableRow>
@@ -87,7 +101,7 @@ const AdminArticles: React.FC = () => {
           <TableBody>
             {articles.length === 0 && (
               <TableRow>
-                <TableCell colSpan={6} sx={{ color: 'text.secondary' }}>No articles yet.</TableCell>
+                <TableCell colSpan={7} sx={{ color: 'text.secondary' }}>No articles yet.</TableCell>
               </TableRow>
             )}
             {articles.map((a) => (
@@ -107,6 +121,15 @@ const AdminArticles: React.FC = () => {
                     onChange={(e) => handleFeaturedChange(a, e.target.checked)}
                     color="secondary"
                   />
+                </TableCell>
+                <TableCell>
+                  <Tooltip title="Shown as the featured hero on the Articles page (only one at a time)">
+                    <Checkbox
+                      checked={a.isHero ?? false}
+                      onChange={(e) => handleHeroChange(a, e.target.checked)}
+                      color="primary"
+                    />
+                  </Tooltip>
                 </TableCell>
                 <TableCell sx={{ color: 'text.secondary', fontSize: '0.8rem' }}>
                   {formatDate(a.createdAt)}

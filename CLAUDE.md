@@ -46,7 +46,7 @@ npx prisma studio        # DB GUI
 - Global `ValidationPipe` with `whitelist: true`, `forbidNonWhitelisted: true`, `transform: true`
 - Global `PrismaClientExceptionFilter` maps Prisma errors to HTTP responses
 - Swagger UI at `/api`
-- Port from `process.env.PORT` or `3000`
+- Port from `process.env.PORT` or `3010`
 
 ### Database Models (PostgreSQL via Prisma)
 - `Article` — uuid PK, `slug` (unique), `title`, `description`, `content` (Text), `coverImage`, `published`, timestamps

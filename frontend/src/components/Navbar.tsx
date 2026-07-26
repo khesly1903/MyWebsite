@@ -72,7 +72,7 @@ const Navbar: React.FC = () => {
             >
               <Typography variant="ice" sx={{ fontSize: "1.5rem" }}>[articles]</Typography>
             </Button>
-            <Button 
+            {/* <Button 
               component={Link} 
               to="/notes" 
               color={isActive('/notes') ? 'primary' : 'inherit'}
@@ -83,7 +83,7 @@ const Navbar: React.FC = () => {
               }}
             >
               <Typography variant="ice" sx={{ fontSize: "1.5rem" }}>[notes]</Typography>
-            </Button>
+            </Button> */}
 
           </Box>
         </Toolbar>

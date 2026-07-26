@@ -56,6 +56,19 @@ export const notesApi = {
 
 export const projectsApi = {
   getAll: (): Promise<Project[]> => apiFetch<Project[]>('/projects'),
+  getById: (id: string): Promise<Project> => apiFetch<Project>(`/projects/${id}`),
+};
+
+export type CreateContactDto = {
+  name: string;
+  email: string;
+  message: string;
+  website?: string; // honeypot — must stay empty
+};
+
+export const contactApi = {
+  send: (dto: CreateContactDto): Promise<{ success: boolean }> =>
+    apiFetch<{ success: boolean }>('/contact', { method: 'POST', body: JSON.stringify(dto) }),
 };
 
 // --- Admin API (auth required for writes) ---
@@ -68,6 +81,7 @@ export type CreateArticleDto = {
   coverImage?: string;
   published?: boolean;
   isFeatured?: boolean;
+  isHero?: boolean;
 };
 
 export type CreateNoteDto = {
@@ -85,6 +99,7 @@ export type CreateProjectDto = {
   github?: string;
   published?: boolean;
   isFeatured?: boolean;
+  isHero?: boolean;
 };
 
 export const adminArticlesApi = {

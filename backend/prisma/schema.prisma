@@ -9,6 +9,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -29,6 +30,7 @@ model Article {
   coverImage  String?  // R2 için kapak fotoğrafı
   published   Boolean  @default(false)
   isFeatured  Boolean  @default(false)
+  isHero      Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -45,6 +47,7 @@ model Project {
   github      String?
   published   Boolean  @default(false)
   isFeatured  Boolean  @default(false)
+  isHero      Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

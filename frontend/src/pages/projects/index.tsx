@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box, Typography, Card, CardContent, CardMedia,
-  CardActions, IconButton, Tooltip, Skeleton,
-} from '@mui/material';
+import { Box, Typography, Button, Skeleton } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { useNavigate } from 'react-router-dom';
 import { projectsApi } from '../../services/api';
 import type { Project } from '../../types/api';
+import { formatDate } from '../../utils/formatDate';
 
-const PLACEHOLDER_IMAGE = 'https://placehold.co/400x200/1a1a1a/ff9900?text=Project';
+const PLACEHOLDER_IMAGE = 'https://placehold.co/900x600/1a1a1a/ff9900?text=Project';
 
 const Projects: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     projectsApi.getAll()
@@ -22,12 +23,11 @@ const Projects: React.FC = () => {
       .finally(() => setLoading(false));
   }, []);
 
+  const hero = projects.find((p) => p.isHero) ?? null;
+  const rest = hero ? projects.filter((p) => p.id !== hero.id) : projects;
+
   return (
     <Box sx={{ mt: 8, mb: 8, maxWidth: 900, mx: 'auto', width: '100%' }}>
-      <Typography variant="ice" sx={{ fontSize: '2.5rem', mb: 6, display: 'block' }}>
-        projects
-      </Typography>
-
       {loading && (
         <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 3 }}>
           {[1, 2, 3, 4].map((i) => (
@@ -47,76 +47,216 @@ const Projects: React.FC = () => {
       )}
 
       {!loading && !error && projects.length > 0 && (
-        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 3 }}>
-          {projects.map((project) => (
-            <Card
-              key={project.id}
-              elevation={0}
+        <>
+          {hero && (
+            <Box
               sx={{
-                border: (theme) => `0.5px solid ${theme.palette.divider}`,
+                mt: 2,
+                mb: 7,
                 display: 'flex',
                 flexDirection: 'column',
-                transition: 'border-color 0.2s, transform 0.2s',
-                '&:hover': {
-                  borderColor: 'primary.main',
-                  transform: 'translateY(-3px)',
-                },
+                alignItems: 'center',
+                textAlign: 'center',
+                gap: 2,
               }}
             >
-              <CardMedia
-                component="img"
-                height={180}
-                image={project.coverImage ?? PLACEHOLDER_IMAGE}
-                alt={project.title}
-                sx={{ objectFit: 'cover' }}
-              />
-              <CardContent sx={{ p: 2.5, flexGrow: 1 }}>
-                <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
-                  {project.title}
-                </Typography>
-                <Typography variant="body2" color="text.secondary" sx={{ 
-                  lineHeight: 1.7,
-                  display: 'block',
-                  overflow: 'visible',
-                  textOverflow: 'clip',
-                  whiteSpace: 'normal',
-                }}>
-                  {project.description}
-                </Typography>
-              </CardContent>
-              {(project.github || project.link) && (
-                <CardActions sx={{ px: 2.5, pb: 2, pt: 0 }}>
-                  {project.github && (
-                    <Tooltip title="GitHub Repository">
-                      <IconButton
-                        href={project.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        size="small"
-                        sx={{ color: 'text.secondary', '&:hover': { color: 'primary.main' } }}
+              <Typography
+                variant="ice"
+                sx={{
+                  fontSize: '0.85rem',
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  color: 'primary.main',
+                }}
+              >
+                featured project
+              </Typography>
+              <Box
+                sx={{
+                  width: '100%',
+                  maxWidth: 640,
+                  height: { xs: 220, sm: 320 },
+                  borderRadius: 4,
+                  overflow: 'hidden',
+                  boxShadow: (theme) => `0 0 0 1px ${theme.palette.primary.main}`,
+                  cursor: 'pointer',
+                }}
+                onClick={() => navigate(`/projects/${hero.id}`)}
+              >
+                <Box
+                  component="img"
+                  src={hero.coverImage ?? PLACEHOLDER_IMAGE}
+                  alt={hero.title}
+                  sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                />
+              </Box>
+              <Typography variant="h3" sx={{ maxWidth: 640, lineHeight: 1.15 }}>
+                {hero.title}
+              </Typography>
+              <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 600 }}>
+                {hero.description}
+              </Typography>
+              <Box sx={{ display: 'flex', gap: 1.5, mt: 1, flexWrap: 'wrap', justifyContent: 'center' }}>
+                <Button
+                  onClick={() => navigate(`/projects/${hero.id}`)}
+                  variant="contained"
+                  endIcon={<ArrowForwardIcon />}
+                >
+                  see details
+                </Button>
+                {hero.github && (
+                  <Button
+                    href={hero.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    variant="outlined"
+                    startIcon={<GitHubIcon />}
+                  >
+                    code
+                  </Button>
+                )}
+                {hero.link && (
+                  <Button
+                    href={hero.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    variant="outlined"
+                    startIcon={<OpenInNewIcon />}
+                  >
+                    demo
+                  </Button>
+                )}
+              </Box>
+            </Box>
+          )}
+
+          <Box>
+            {rest.map((project, i) => {
+              const reverse = i % 2 === 1;
+              return (
+                <Box
+                  key={project.id}
+                  sx={{
+                    display: 'flex',
+                    flexDirection: { xs: 'column', sm: reverse ? 'row-reverse' : 'row' },
+                    gap: 4,
+                    py: 4.5,
+                  }}
+                >
+                  <Box
+                    sx={{
+                      flex: { sm: '0 0 300px' },
+                      minWidth: { sm: 240 },
+                      height: { xs: 200, sm: 190 },
+                      borderRadius: 3,
+                      overflow: 'hidden',
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => navigate(`/projects/${project.id}`)}
+                  >
+                    <Box
+                      component="img"
+                      src={project.coverImage ?? PLACEHOLDER_IMAGE}
+                      alt={project.title}
+                      sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                    />
+                  </Box>
+                  <Box
+                    sx={{
+                      flex: '1 1 320px',
+                      minWidth: { sm: 280 },
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      gap: 1,
+                    }}
+                  >
+                    <Typography
+                      variant="caption"
+                      color="text.secondary"
+                      sx={{ textTransform: 'uppercase', letterSpacing: '0.06em' }}
+                    >
+                      {formatDate(project.createdAt)}
+                    </Typography>
+                    <Typography
+                      variant="h5"
+                      sx={{ cursor: 'pointer', width: 'fit-content' }}
+                      onClick={() => navigate(`/projects/${project.id}`)}
+                    >
+                      {project.title}
+                    </Typography>
+                    <Typography variant="body1" color="text.secondary">
+                      {project.description}
+                    </Typography>
+                    <Box sx={{ display: 'flex', gap: 2.5, mt: 0.75, alignItems: 'center', flexWrap: 'wrap' }}>
+                      <Box
+                        component="button"
+                        onClick={() => navigate(`/projects/${project.id}`)}
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 0.5,
+                          color: 'primary.main',
+                          textDecoration: 'none',
+                          fontWeight: 600,
+                          fontSize: '0.95rem',
+                          fontFamily: 'inherit',
+                          background: 'none',
+                          border: 'none',
+                          p: 0,
+                          cursor: 'pointer',
+                          '&:hover': { textDecoration: 'underline' },
+                        }}
                       >
-                        <GitHubIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
-                  )}
-                  {project.link && (
-                    <Tooltip title="Live Demo">
-                      <IconButton
-                        href={project.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        size="small"
-                        sx={{ color: 'text.secondary', '&:hover': { color: 'primary.main' } }}
-                      >
-                        <OpenInNewIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
-                  )}
-                </CardActions>
-              )}
-            </Card>
-          ))}
-        </Box>
+                        see details <ArrowForwardIcon sx={{ fontSize: '1rem' }} />
+                      </Box>
+                      {project.github && (
+                        <Box
+                          component="a"
+                          href={project.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 0.5,
+                            color: 'text.secondary',
+                            textDecoration: 'none',
+                            fontWeight: 600,
+                            fontSize: '0.95rem',
+                            '&:hover': { textDecoration: 'underline' },
+                          }}
+                        >
+                          <GitHubIcon fontSize="small" /> code
+                        </Box>
+                      )}
+                      {project.link && (
+                        <Box
+                          component="a"
+                          href={project.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 0.5,
+                            color: 'text.secondary',
+                            textDecoration: 'none',
+                            fontWeight: 600,
+                            fontSize: '0.95rem',
+                            '&:hover': { textDecoration: 'underline' },
+                          }}
+                        >
+                          <OpenInNewIcon fontSize="small" /> demo
+                        </Box>
+                      )}
+                    </Box>
+                  </Box>
+                </Box>
+              );
+            })}
+          </Box>
+        </>
       )}
     </Box>
   );
