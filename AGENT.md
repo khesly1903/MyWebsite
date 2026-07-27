@@ -13,7 +13,7 @@ Personal portfolio website — Berkay Kaya (mathematician/full-stack developer).
 ### Frontend (`cd frontend`)
 ```bash
 npm run dev        # dev server (Vite, default port 5173 unless overridden in vite.config.ts / .env)
-npm run build      # tsc -b + vite build
+npm run build      # vite build (production bundle generated in dist/)
 npm run lint       # eslint
 npm run preview    # preview production build
 ```
@@ -21,7 +21,7 @@ npm run preview    # preview production build
 ### Backend (`cd backend`)
 ```bash
 npm run start:dev  # watch mode (nest start --watch), default port 3010 unless PORT env var set
-npm run build      # nest build
+npm run build      # prisma generate && nest build (generates client and compiles to dist/)
 npm run start:prod # node dist/main
 npm run lint       # eslint --fix
 npm run test       # jest (unit)
@@ -36,8 +36,8 @@ npx prisma studio        # DB GUI
 
 ### Environment variables
 No `.env.example` is checked in. Required vars, gitignored in both apps:
-- `frontend/.env`: `VITE_API_URL` (backend base URL, e.g. `http://localhost:3010`)
-- `backend/.env`: `DATABASE_URL` (Postgres connection string), `JWT_SECRET`, `JWT_EXPIRY`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `R2_DOMAIN`, `PORT` (optional, defaults to 3010), `ZOHO_SMTP_HOST` (optional, defaults to `smtp.zoho.com` — set to `smtp.zoho.eu` etc. if the account lives in a different Zoho data center), `ZOHO_EMAIL` / `ZOHO_APP_PASSWORD` (SMTP auth — must be a real Zoho mailbox login, not a distribution group/alias; use a Zoho **app password**, not the account password), `CONTACT_TO_EMAIL` (recipient for the contact form)
+- `frontend/.env`: `VITE_API_URL` (backend base URL, e.g. `http://localhost:3010` or `https://api.kayaberkay.xyz`). Note: Since Vite builds static files, `VITE_API_URL` must be set **before** running `npm run build`.
+- `backend/.env`: `DATABASE_URL` (Postgres connection string), `JWT_SECRET`, `JWT_EXPIRY`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `R2_DOMAIN`, `PORT` (optional, defaults to 3010), `FRONTEND_URL` (comma-separated allowed origins, e.g. `https://kayaberkay.xyz,https://www.kayaberkay.xyz`), `ZOHO_SMTP_HOST` (optional, defaults to `smtp.zoho.com` — set to `smtp.zoho.eu` etc. if the account lives in a different Zoho data center), `ZOHO_EMAIL` / `ZOHO_APP_PASSWORD` (SMTP auth — must be a real Zoho mailbox login, not a distribution group/alias; use a Zoho **app password**, not the account password), `CONTACT_TO_EMAIL` (recipient for the contact form)
 
 ## Architecture
 
@@ -51,15 +51,18 @@ No `.env.example` is checked in. Required vars, gitignored in both apps:
 - Admin app: `src/pages/admin/` — `AuthContext` (`contexts/AuthContext.tsx`) gates a `ProtectedRoute`; login via `authApi.login` stores a JWT in `localStorage` (see `services/api.ts`, key `admin_token`). Per-entity list + form pages under `admin/articles`, `admin/notes`, `admin/projects`.
 - `services/api.ts` — single API client. Public `articlesApi`/`notesApi`/`projectsApi` (published-only), `contactApi` (unauthenticated `POST /contact`), admin `adminArticlesApi`/`adminNotesApi`/`adminProjectsApi` (`?all=true`, JWT-authenticated writes via `auth: true` option on `apiFetch`).
 - Content layout constrained to `maxWidth: 900` centered, similar spacing (`mt: 8, mb: 8`) across pages.
+- **Build tool dependencies**: `typescript`, `vite`, `@vitejs/plugin-react`, and `@types/*` are placed in `"dependencies"` in `frontend/package.json` so production deployments (`npm ci --omit=dev`) install them for static bundling.
 
 ### Backend
 - Standard NestJS modular structure: `ArticlesModule`, `ProjectsModule`, `NotesModule`, `AuthModule`, `ContactModule`, `PrismaModule`
 - `PrismaModule` exports `DatabaseService` (extends `PrismaClient`) using `@prisma/adapter-pg` with a `pg` `Pool` — requires `DATABASE_URL` env var
+- **Prisma 7 Compatibility**: Uses Prisma 7 (`^7.7.0`). In Prisma 7, database `url` is **no longer supported in `schema.prisma`**; it is configured via `backend/prisma.config.ts`.
+- **TypeScript Build Configuration**: `backend/tsconfig.build.json` explicitly sets `"rootDir": "src"` and excludes `"prisma.config.ts"`, ensuring `nest build` outputs directly to `dist/main.js` (preventing `Cannot find module '/app/dist/main'`).
 - Auth is **not** DB-backed: `AuthService.login` checks the submitted email/password against `ADMIN_EMAIL`/`ADMIN_PASSWORD` env vars directly and signs a JWT. The `User` model exists in the schema but is unused by any controller.
 - `ContactModule` (`src/contact/`) — unauthenticated `POST /contact` (name/email/message + honeypot field). `ContactService` sends mail via `nodemailer` over Zoho SMTP (see env vars above); `reply-to` is set to the submitter's address so replies go straight to them. Rate-limited via `@nestjs/throttler`: global default 20 req/min (`AppModule`), 3 req/min on this endpoint specifically.
 - Global `ValidationPipe` with `whitelist: true`, `forbidNonWhitelisted: true`, `transform: true`
 - Global `PrismaClientExceptionFilter` maps Prisma errors to HTTP responses
-- CORS origin defaults to `['http://localhost:5173', 'http://localhost:5174']` unless `FRONTEND_URL` env var is set
+- **CORS Configuration**: Reads allowed origins from `FRONTEND_URL` (supports comma-separated URLs, automatically strips trailing slashes). Allows all HTTP methods including `OPTIONS` and `HEAD` for preflight checks.
 - Swagger UI at `/api`
 - Port from `process.env.PORT` or `3010`
 
@@ -78,3 +81,24 @@ No `.env.example` is checked in. Required vars, gitignored in both apps:
 - `isHero` — a **separate**, single-select flag (not related to `isFeatured`) that picks the one project/article shown as the large hero block at the top of `/projects` and `/articles` respectively. `ProjectsService`/`ArticlesService` `create`/`update` enforce single-selection server-side in a transaction (setting one project/article's `isHero: true` unsets it on all others of that type). Admin list pages expose this as a "Hero" checkbox column.
 - Content fields (`Article.content`, `Project.content`) are Markdown, rendered via `react-markdown` + `remark-gfm` in `ArticleDetail.tsx`/`ProjectDetail.tsx` with matching `sx` overrides for `h1`–`h3`, code blocks, blockquotes, tables, images.
 - Tech icons loaded from `https://cdn.simpleicons.org/<icon>` — icon names must match SimpleIcons slugs. Some brand slugs 404 on `cdn.simpleicons.org` (e.g. `linkedin`, likely trademark-related removal) — fall back to `https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/<icon>.svg` for those; note the jsDelivr SVGs have no `fill` set (render black), so invert via CSS `filter` for dark backgrounds instead of using simpleicons.org's `/<icon>/<hexcolor>` path variant.
+
+## Production & Coolify Deployment
+
+### Frontend Deployment (Coolify / Nixpacks)
+- **Base Directory**: `/frontend`
+- **Build Command**: `npm run build` (`vite build` outputs static files to `/dist`)
+- **Publish Directory**: `/dist`
+- **Start Command**: Leave empty (Nixpacks automatically serves SPA static files using lightweight Nginx/Caddy on port 80).
+- **Environment Variables**: Must define `VITE_API_URL=https://api.kayaberkay.xyz` in Coolify **before** building, as Vite embeds environment variables into static JS bundles at build time.
+
+### Backend Deployment (Coolify / Nixpacks)
+- **Base Directory**: `/backend`
+- **Build Command**: `npm run build` (`prisma generate && nest build`)
+- **Start Command**: `npm run start:prod` (`node dist/main`)
+- **Port**: Expose port `3010` (or set `PORT` env var to match container configuration).
+- **Environment Variables**: Set `DATABASE_URL`, `FRONTEND_URL` (`https://kayaberkay.xyz,https://www.kayaberkay.xyz`), `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `JWT_SECRET`, and optional Zoho SMTP vars.
+
+### Infrastructure & VPS Resource Management
+- **OOM / Error 137**: TypeScript compilation (`tsc`/`nest build`) and Prisma CLI require significant memory (~1.5GB+ RAM). On smaller VPS instances, ensure at least 4GB Swap is enabled so Linux OOM Killer does not terminate build containers or database services (`coolify-db`).
+- **Disk Space**: Docker overlay2 and Nixpacks caches can fill up small root partitions (`/dev/sda2`). Regularly clean unused build artifacts (`docker system prune -a --volumes -f`) or truncate container JSON logs if disk reaches 100%.
+
